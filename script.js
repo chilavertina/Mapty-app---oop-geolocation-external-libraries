@@ -18,14 +18,17 @@ if (navigator.geolocation)
       const { longitude } = position.coords;
       console.log(`https://www.google.com/maps/@${latitude},${longitude}`);
 
-      var map = L.map('map').setView([51.505, -0.09], 13);
+      const coords = [latitude, longitude]; // niz coords za ubacivanje trenutnih koordinata u kod mape
+
+      const map = L.map('map').setView(coords, 13); // 13 predstavlja zoom
 
       L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        // u ovom redu mozemo menjati vrstu mape koju zelimo da nam se prikazuje
         attribution:
           '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
       }).addTo(map);
 
-      L.marker([51.5, -0.09])
+      L.marker(coords)
         .addTo(map)
         .bindPopup('A pretty CSS3 popup.<br> Easily customizable.')
         .openPopup();
