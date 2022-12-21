@@ -43,6 +43,14 @@ if (navigator.geolocation)
 
 form.addEventListener('submit', function (e) {
   e.preventDefault();
+
+  // Ciscenje polja u formi tokom klika za novi marker
+  inputCadence.value =
+    inputDistance.value =
+    inputDuration.value =
+    inputElevation.value =
+      '';
+
   // Prikazi marker
   console.log(mapEvent);
   const { lat, lng } = mapEvent.latlng;
