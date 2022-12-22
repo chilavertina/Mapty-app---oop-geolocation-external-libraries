@@ -23,9 +23,12 @@ class App {
 
   _getPosition() {
     if (navigator.geolocation)
-      navigator.geolocation.getCurrentPosition(this._loadMap, function () {
-        alert('Could not get your position.');
-      });
+      navigator.geolocation.getCurrentPosition(
+        this._loadMap.bind(this),
+        function () {
+          alert('Could not get your position.');
+        }
+      );
   }
 
   _loadMap(position) {
@@ -35,16 +38,16 @@ class App {
 
     const coords = [latitude, longitude]; // niz coords za ubacivanje trenutnih koordinata u kod mape
 
-    map = L.map('map').setView(coords, 13); // 13 predstavlja zoom
+    this.#map = L.map('map').setView(coords, 13); // 13 predstavlja zoom
 
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
       // u ovom redu mozemo menjati vrstu mape koju zelimo da nam se prikazuje
       attribution:
         '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-    }).addTo(map);
+    }).addTo(this.#map);
 
-    map.on('click', function (mapE) {
-      mapEvent = mapE;
+    this.#map.on('click', function (mapE) {
+      this.#mapEvent = mapE;
       form.classList.remove('hidden');
       inputDistance.focus();
     });
