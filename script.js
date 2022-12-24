@@ -105,6 +105,9 @@ class App {
   }
 
   _newWorkout(e) {
+    const validInputs = (...inputs) =>
+      inputs.every(inp => Number.isFinite(inp)); // proverava da li je svaki uneti podatak u polje true uz pomoc every i uslova  (inp => Number.isFinite(inp))
+
     e.preventDefault();
 
     // Get data from form
@@ -117,15 +120,15 @@ class App {
       const cadence = +inputCadence.value;
       // Check if data is valid
       if (
-        !Number.isFinite(distance) ||
-        !Number.isFinite(duration) ||
-        !Number.isFinite(cadence)
+        // !Number.isFinite(distance) ||
+        // !Number.isFinite(duration) ||
+        // !Number.isFinite(cadence)
+        !validInputs(distance, duration, cadence)
       )
         return alert('Inputs have to be positive numbers!');
     }
 
     // If workout cycling, create cycling object
-    object;
     if (type === 'cycling') {
       const elevation = +inputElevation.value;
     }
