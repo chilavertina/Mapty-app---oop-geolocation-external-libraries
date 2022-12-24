@@ -131,6 +131,8 @@ class App {
     // If workout cycling, create cycling object
     if (type === 'cycling') {
       const elevation = +inputElevation.value;
+      if (!validInputs(distance, duration, elevation))
+        return alert('Inputs have to be positive numbers!');
     }
     // Add new object to workout array
 
