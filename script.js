@@ -6,6 +6,7 @@ const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 
 class Workout {
   date = new Date();
   id = (Date.now() + '').slice(-10);
+
   constructor(coords, distance, duration) {
     this.coords = coords; // [lat, lng]
     this.distance = distance; //in km
@@ -14,6 +15,7 @@ class Workout {
 }
 
 class Running extends Workout {
+  type = 'running';
   constructor(coords, distance, duration, cadence) {
     super(coords, distance, duration);
     this.cadence = cadence;
@@ -27,6 +29,7 @@ class Running extends Workout {
   }
 }
 class Cycling extends Workout {
+  type = 'cycling';
   constructor(coords, distance, duration, elevationGain) {
     super(coords, distance, duration);
     this.elevationGain = elevationGain;
@@ -151,9 +154,22 @@ class App {
     this.#workouts.push(workout);
 
     // Render workout on map as a marker
+    this.renderWorkoutMarker(workout);
     // Prikazi marker
 
-    L.marker({ lat, lng })
+    // Render workout on list
+
+    // Hide form and clear input fields
+    // Ciscenje polja u formi tokom klika za novi marker
+    inputCadence.value =
+      inputDistance.value =
+      inputDuration.value =
+      inputElevation.value =
+        '';
+  }
+
+  renderWorkoutMarker(workout) {
+    L.marker(workout.coords)
       .addTo(this.#map)
       .bindPopup(
         L.popup({
@@ -161,22 +177,12 @@ class App {
           minWidth: 100,
           autoClose: false,
           closeOnClick: false,
-          className: 'running-popup',
+          className: `${workout.type}-popup`,
         })
       )
-      .setPopupContent('Workout')
+      .setPopupContent('workout')
       .openPopup();
   }
 }
-// Render workout on list
-
-// Hide form and clear input fields
-
-// Ciscenje polja u formi tokom klika za novi marker
-inputCadence.value =
-  inputDistance.value =
-  inputDuration.value =
-  inputElevation.value =
-    '';
 
 const app = new App();
