@@ -3,14 +3,6 @@
 // prettier-ignore
 const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
-const form = document.querySelector('.form');
-const containerWorkouts = document.querySelector('.workouts');
-const inputType = document.querySelector('.form__input--type');
-const inputDistance = document.querySelector('.form__input--distance');
-const inputDuration = document.querySelector('.form__input--duration');
-const inputCadence = document.querySelector('.form__input--cadence');
-const inputElevation = document.querySelector('.form__input--elevation');
-
 class Workout {
   date = new Date();
   id = (Date.now() + '').slice(-10);
@@ -48,12 +40,21 @@ class Cycling extends Workout {
   }
 }
 
-const run1 = new Running([39, -12], 5.2, 24, 178);
-const cycling1 = new Cycling([39, -12], 27, 95, 523);
-console.log(run1, cycling1);
+// const run1 = new Running([39, -12], 5.2, 24, 178);
+// const cycling1 = new Cycling([39, -12], 27, 95, 523);
+// console.log(run1, cycling1);
 
 ///////////////////////////////////////////////////
 // APPLICATION ARCHITECTURE
+
+const form = document.querySelector('.form');
+const containerWorkouts = document.querySelector('.workouts');
+const inputType = document.querySelector('.form__input--type');
+const inputDistance = document.querySelector('.form__input--distance');
+const inputDuration = document.querySelector('.form__input--duration');
+const inputCadence = document.querySelector('.form__input--cadence');
+const inputElevation = document.querySelector('.form__input--elevation');
+
 class App {
   #map;
   #mapEvent;
@@ -106,13 +107,31 @@ class App {
   _newWorkout(e) {
     e.preventDefault();
 
-    // Ciscenje polja u formi tokom klika za novi marker
-    inputCadence.value =
-      inputDistance.value =
-      inputDuration.value =
-      inputElevation.value =
-        '';
+    // Get data from form
+    const type = inputType.value;
+    const distance = +inputDistance.value; // pretvaranje stringa u broj uz pomoc +
+    const duration = +inputDuration.value; // pretvaranje stringa u broj uz pomoc +
 
+    // If workout running, create running object
+    if (type === 'running') {
+      const cadence = +inputCadence.value;
+      // Check if data is valid
+      if (
+        !Number.isFinite(distance) ||
+        !Number.isFinite(duration) ||
+        !Number.isFinite(cadence)
+      )
+        return alert('Inputs have to be positive numbers!');
+    }
+
+    // If workout cycling, create cycling object
+    object;
+    if (type === 'cycling') {
+      const elevation = +inputElevation.value;
+    }
+    // Add new object to workout array
+
+    // Render workout on map as a marker
     // Prikazi marker
     const { lat, lng } = this.#mapEvent.latlng;
     L.marker({ lat, lng })
@@ -130,5 +149,15 @@ class App {
       .openPopup();
   }
 }
+// Render workout on list
+
+// Hide form and clear input fields
+
+// Ciscenje polja u formi tokom klika za novi marker
+inputCadence.value =
+  inputDistance.value =
+  inputDuration.value =
+  inputElevation.value =
+    '';
 
 const app = new App();
