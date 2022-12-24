@@ -58,6 +58,7 @@ const inputElevation = document.querySelector('.form__input--elevation');
 class App {
   #map;
   #mapEvent;
+  #workouts = [];
 
   constructor() {
     this._getPosition();
@@ -116,6 +117,8 @@ class App {
     const type = inputType.value;
     const distance = +inputDistance.value; // pretvaranje stringa u broj uz pomoc +
     const duration = +inputDuration.value; // pretvaranje stringa u broj uz pomoc +
+    const { lat, lng } = this.#mapEvent.latlng;
+    let workout;
 
     // If workout running, create running object
     if (type === 'running') {
@@ -129,6 +132,8 @@ class App {
         !allPositive(distance, duration, cadence)
       )
         return alert('Inputs have to be positive numbers!');
+
+      workout = new Running({ lat, lng }, distance, duration, cadence);
     }
 
     // If workout cycling, create cycling object
@@ -139,12 +144,15 @@ class App {
         !allPositive(distance, duration)
       )
         return alert('Inputs have to be positive numbers!');
+
+      workout = new Cycling({ lat, lng }, distance, duration, elevation);
     }
     // Add new object to workout array
+    this.#workouts.push(workout);
 
     // Render workout on map as a marker
     // Prikazi marker
-    const { lat, lng } = this.#mapEvent.latlng;
+
     L.marker({ lat, lng })
       .addTo(this.#map)
       .bindPopup(
