@@ -106,7 +106,9 @@ class App {
 
   _newWorkout(e) {
     const validInputs = (...inputs) =>
-      inputs.every(inp => Number.isFinite(inp)); // proverava da li je svaki uneti podatak u polje true uz pomoc every i uslova  (inp => Number.isFinite(inp))
+      inputs.every(inp => Number.isFinite(inp)); // proverava da li je svaki uneti podatak u polje broj uz pomoc every i uslova  (inp => Number.isFinite(inp))
+
+    const allPositive = (...inputs) => inputs.every(inp => inp > 0); // proverava da li je svaki uneti podatak u polje pozitivan broj
 
     e.preventDefault();
 
@@ -123,7 +125,8 @@ class App {
         // !Number.isFinite(distance) ||
         // !Number.isFinite(duration) ||
         // !Number.isFinite(cadence)
-        !validInputs(distance, duration, cadence)
+        !validInputs(distance, duration, cadence) ||
+        !allPositive(distance, duration, cadence)
       )
         return alert('Inputs have to be positive numbers!');
     }
@@ -131,7 +134,10 @@ class App {
     // If workout cycling, create cycling object
     if (type === 'cycling') {
       const elevation = +inputElevation.value;
-      if (!validInputs(distance, duration, elevation))
+      if (
+        !validInputs(distance, duration, elevation) ||
+        !allPositive(distance, duration)
+      )
         return alert('Inputs have to be positive numbers!');
     }
     // Add new object to workout array
