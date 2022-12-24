@@ -154,10 +154,11 @@ class App {
     this.#workouts.push(workout);
 
     // Render workout on map as a marker
-    this.renderWorkoutMarker(workout);
+    this._renderWorkoutMarker(workout);
     // Prikazi marker
 
     // Render workout on list
+    this._renderWorkoutMarker(workout);
 
     // Hide form and clear input fields
     // Ciscenje polja u formi tokom klika za novi marker
@@ -168,7 +169,7 @@ class App {
         '';
   }
 
-  renderWorkoutMarker(workout) {
+  _renderWorkoutMarker(workout) {
     L.marker(workout.coords)
       .addTo(this.#map)
       .bindPopup(
@@ -182,6 +183,22 @@ class App {
       )
       .setPopupContent('workout')
       .openPopup();
+  }
+  _renderWorkout(workout) {
+    const hmtl = `
+    <li class="workout workout--running" data-id="1234567890">
+          <h2 class="workout__title">Running on April 14</h2>
+          <div class="workout__details">
+            <span class="workout__icon">🏃‍♂️</span>
+            <span class="workout__value">5.2</span>
+            <span class="workout__unit">km</span>
+          </div>
+          <div class="workout__details">
+            <span class="workout__icon">⏱</span>
+            <span class="workout__value">24</span>
+            <span class="workout__unit">min</span>
+          </div>
+          `;
   }
 }
 
